@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css" />
+    <title>Directory App</title>
+  </head>
+  <body>
+    <h1>Directory App</h1>
+    <div class="main-section">
+      <div class="add-section">
+        <h3>Add Contact</h3>
+        <br />
+        <form>
+          <label for="name">Name:</label>
+          <br />
+          <br />
+          <input type="text" id="name" name="name" /><br /><br />
+          <label for="contactN">Contact:</label>
+          <br /><br />
+          <input type="text" id="contactN" name="contactN" /><br /><br />
+          <label for="aaadhar">Aadhar Number</label>
+          <br /><br />
+          <input type="text" id="aaadhar" name="aaadhar" /><br /><br />
+          <button type="button" onclick="addContact()" class="add-button">
+            Add Contact
+          </button>
+        </form>
+      </div>
+      <br />
+      <div class="search-section">
+        <h3>Search a Contact</h3>
+        <br />
+        <label for="search">Search Contact:</label>
+        <br />
+        <br />
+        <input
+          type="text"
+          id="search"
+          name="search"
+          onkeyup="searchContact()"
+        />
+      </div>
+      <br /><br />
+    </div>
+
+    <table id="contactTable">
+      <tr>
+        <th>Name</th>
+        <th>Contact</th>
+        <th>Aadhar Number</th>
+        <th>Action</th>
+      </tr>
+    </table>
+
+    <script>
+      var contacts = [];
+
+      function addContact() {
+        var name = document.getElementById("name").value;
+        var contactN = document.getElementById("contactN").value;
+        var aaadhar = document.getElementById("aaadhar").value;
+
+        if (name == "" || contactN == "" || aaadhar == "") {
+          alert("Please fill in all the fields");
+          return false;
+        }
+
+        var contact = {
+          name: name,
+          contactN: contactN,
+          aaadhar: aaadhar,
+        };
+
+        contacts.push(contact);
+        displayContacts();
+        clearForm();
+      }
+
+      function displayContacts() {
+        var table = document.getElementById("contactTable");
+
+        table.innerHTML =
+          "<tr><th>Name</th><th>Contact</th><th>Aadhar Number</th><th>Action</th></tr>";
+
+        for (var i = 0; i < contacts.length; i++) {
+          var row = table.insertRow(i + 1);
+          var nameCell = row.insertCell(0);
+          var emailCell = row.insertCell(1);
+          var phoneCell = row.insertCell(2);
+          var actionCell = row.insertCell(3);
+
+          nameCell.innerHTML = contacts[i].name;
+          emailCell.innerHTML = contacts[i].contactN;
+          phoneCell.innerHTML = contacts[i].aaadhar;
+          actionCell.innerHTML =
+            "<button type='button' onclick='deleteContact(" +
+            i +
+            ")'>Delete</button>";
+        }
+      }
+
+      function deleteContact(index) {
+        contacts.splice(index, 1);
+        displayContacts();
+      }
+
+      function clearForm() {
+        document.getElementById("name").value = "";
+        document.getElementById("contactN").value = "";
+        document.getElementById("aaadhar").value = "";
+      }
+
+      function searchContact() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("search");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("contactTable");
+        tr = table.getElementsByTagName("tr");
+
+        for (i = 1; i < tr.length; i++) {
+          td = tr[i].getElementsByTagName("td")[0];
+          if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              tr[i].style.display = "";
+            } else {
+              tr[i].style.display = "none";
+            }
+          }
+        }
+      }
+    </script>
+  </body>
+</html>
